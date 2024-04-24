@@ -6,7 +6,7 @@ import {SafeAreaView, StyleSheet, Text} from 'react-native';
 const BASE_URL = 'https://rickandmortyapi.com/api/character'; 
 function App(): React.JSX.Element {
 
-  const [characters, getCharacters] = useState([]);
+  const [characters, setCharacters] = useState([]);
 
 
   const getCharacters = async () => {
@@ -14,7 +14,9 @@ function App(): React.JSX.Element {
     try {
       const response = await fetch(BASE_URL);
 
-      console.log(response);
+      const data = await response.json();
+
+      console.log(data);
   
     } catch(e) {
       console.log(e);
