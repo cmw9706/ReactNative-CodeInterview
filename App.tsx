@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, StyleSheet, Text, FlatList} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, FlatList, Image} from 'react-native';
 
 
 
@@ -29,19 +29,25 @@ function App(): React.JSX.Element {
     getCharacters();
   }, [])
 
-  const renderItem = ({item}) => {
-    <Text>{item.name}</Text>
-  }
+  const renderItem = ({item}) => (
+    <View style={styles.itemContainer}>
+      <Image
+        source={item.image}
+        style={styles.charaterImage}
+      />
+      <Text style={styles.charaterName}>{item.name}</Text>
+    </View>
+  )
 
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Characters:</Text>
+      <Text style={styles.title}>Characters:</Text>
       {
         characters.length ? (
           <FlatList 
             data={characters}
-            renderItems={}
+            renderItem={renderItem}
             keyExtractor={item => item.id.toString()}
           />
         ) : null
@@ -55,6 +61,28 @@ export default App;
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
+    flex: 1,
     alignItems: 'center',
+    marginTop: 20,
+    justifyContent: 'center'
   },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 20
+  },
+  itemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 20
+  },
+  characterImage: {
+    width: 60,
+    height: 60,
+    borderRadius: '50%',
+    marginRight: 10
+  },
+  characterName: {
+    fontSize: 16
+  }
 });
