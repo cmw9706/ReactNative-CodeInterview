@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, StyleSheet, Text, FlatList, Image, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, FlatList, Image, View, TextInput} from 'react-native';
 
 
 
@@ -7,12 +7,21 @@ const BASE_URL = 'https://rickandmortyapi.com/api/character';
 function App(): React.JSX.Element {
 
   const [characters, setCharacters] = useState([]);
+  const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(false);
 
 
   const getCharacters = async () => {
 
     try {
-      const response = await fetch(BASE_URL);
+      setLoading(true);
+
+      let actualURL = BASE_URL;
+      if(search) {
+        actualURL = BASE_URL + 'name=' + search
+      }
+
+      const response = await fetch(actualURL);
 
       const data = await response.json();
 
@@ -22,12 +31,14 @@ function App(): React.JSX.Element {
   
     } catch(e) {
       console.log(e);
+    } finally {
+      setLoading(false);
     }
   }
 
   useEffect(() => {
     getCharacters();
-  }, [])
+  }, [search])
 
   const renderItem = ({item}) => (
     <View style={styles.itemContainer}>
@@ -35,7 +46,7 @@ function App(): React.JSX.Element {
         source={{
           uri: item.image
         }}
-        style={styles.charaterImage}
+        style={styles.characterImage}
       />
       <Text style={styles.characterName}>{item.name}</Text>
     </View>
@@ -44,15 +55,23 @@ function App(): React.JSX.Element {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Characters:</Text>
+      <TextInput 
+        style={styles.searchInput}
+        value={search}
+        onChangeText={setSearch}
+        placeholder="Search charcters..."
+      />
       {
-        characters.length ? (
+        loading ? (
+          <Text>Loading Characters...</Text>
+        ) : (
           <FlatList 
             data={characters}
             renderItem={renderItem}
             keyExtractor={item => item.id.toString()}
+            ListEmptyComponent={<Text>No charcters found.</Text>}
           />
-        ) : null
+        )
       }
     </SafeAreaView>
   );
@@ -68,12 +87,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
     justifyContent: 'center'
   },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 20
-  },
   itemContainer: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 20
@@ -86,5 +101,13 @@ const styles = StyleSheet.create({
   },
   characterName: {
     fontSize: 16
+  },
+  searchInput: {
+    height: 40,
+    width: '90%',
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 5
   }
 });
