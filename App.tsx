@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, StyleSheet, Text, FlatList, Image} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, FlatList, Image, View} from 'react-native';
 
 
 
@@ -37,7 +37,7 @@ function App(): React.JSX.Element {
         }}
         style={styles.charaterImage}
       />
-      <Text style={styles.charaterName}>{item.name}</Text>
+      <Text style={styles.characterName}>{item.name}</Text>
     </View>
   )
 
