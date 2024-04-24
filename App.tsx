@@ -32,7 +32,9 @@ function App(): React.JSX.Element {
   const renderItem = ({item}) => (
     <View style={styles.itemContainer}>
       <Image
-        source={item.image}
+        source={{
+          uri: item.image
+        }}
         style={styles.charaterImage}
       />
       <Text style={styles.charaterName}>{item.name}</Text>
