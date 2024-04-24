@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, StyleSheet, Text} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, FlatList} from 'react-native';
 
 
 
@@ -16,7 +16,9 @@ function App(): React.JSX.Element {
 
       const data = await response.json();
 
-      console.log(data);
+      setCharacters(data.results);
+
+      console.log(data.results);
   
     } catch(e) {
       console.log(e);
@@ -27,10 +29,23 @@ function App(): React.JSX.Element {
     getCharacters();
   }, [])
 
+  const renderItem = ({item}) => {
+    <Text>{item.name}</Text>
+  }
+
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Code interview with connor!</Text>
+      <Text>Characters:</Text>
+      {
+        characters.length ? (
+          <FlatList 
+            data={characters}
+            renderItems={}
+            keyExtractor={item => item.id.toString()}
+          />
+        ) : null
+      }
     </SafeAreaView>
   );
 }
