@@ -18,7 +18,7 @@ function App(): React.JSX.Element {
 
       let actualURL = BASE_URL;
       if(search) {
-        actualURL = BASE_URL + 'name=' + search
+        actualURL = BASE_URL + 'name=' + search.toLocaleLowerCase();
       }
 
       const response = await fetch(actualURL);
