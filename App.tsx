@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   characterImage: {
     width: 60,
     height: 60,
-    borderRadius: '50%',
+    borderRadius: 60/2,
     marginRight: 10
   },
   characterName: {
